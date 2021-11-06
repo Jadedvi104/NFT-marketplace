@@ -2,26 +2,15 @@
 
 require("@nomiclabs/hardhat-waffle");
 require('@nomiclabs/hardhat-ethers');
-const { mnemonic } = require('./secrets.json');
-
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async () => {
-  const accounts = await ethers.getSigners();
-
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
+const { mnemonic, privateKey } = require('./secrets.json');
+// const fs = require('fs')
+// const privateKey = fs.readFileSync(".secret").toString().trim() || "01234567890123456789"
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
  module.exports = {
-   defaultNetwork: "mainnet",
+   defaultNetwork: "hardhat",
    networks: {
    	localhost: {
        url: "http://127.0.0.1:8545"
@@ -39,7 +28,14 @@ task("accounts", "Prints the list of accounts", async () => {
        chainId: 56,
        gasPrice: 20000000000,
        accounts: {mnemonic: mnemonic}
-     }
+     },
+     hardhat: {
+      chainId: 1337
+    },
+    mumbai: {
+      url: "https://rpc-mumbai.matic.today",
+      accounts: [privateKey]
+    }
    },
    solidity: {
    version: "0.8.3",
